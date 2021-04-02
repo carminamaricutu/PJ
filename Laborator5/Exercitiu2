@@ -1,0 +1,125 @@
+package laborator5_2;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
+class Carte
+{
+	private String titlu;
+	private String autor;
+	private int an_aparitie;
+
+	public Carte(String titlu, String autor, int an_aparitie)
+	{
+		this.titlu=titlu;
+		this.autor=autor;
+		this.an_aparitie=an_aparitie;
+	}
+
+	public String getTitlu() {
+		return titlu;
+	}
+
+	public void setTitlu(String titlu) {
+		this.titlu = titlu;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
+	public int getAn_aparitie() {
+		return an_aparitie;
+	}
+
+	public void setAn_aparitie(int an_aparitie) {
+		this.an_aparitie = an_aparitie;
+	}
+
+	@Override
+	public String toString() {
+		return titlu + ", " + autor + ", " + an_aparitie;
+	}
+
+}
+
+class ComparaTitlu implements Comparator<Carte>{
+
+	public int compare(Carte o1, Carte o2) {
+		return o1.getTitlu().compareTo(o2.getTitlu());
+	}
+
+}
+
+public class MainApp2 {
+
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader fisierIntrare = new BufferedReader(new FileReader("in.txt"));
+		Map<Integer, Carte> carti_map = new HashMap<Integer, Carte>();
+
+		String line;
+		String[] s;
+
+		int id;
+		String titlu;
+		String autor;
+		int an_aparitie;
+
+		line=fisierIntrare.readLine();
+		while(line!=null)
+		{
+			s=line.split("; ");
+			id=Integer.parseInt(s[0]);
+			titlu=s[1];
+			autor=s[2];
+			an_aparitie=Integer.parseInt(s[3]);
+
+			carti_map.put(id, new Carte(titlu, autor, an_aparitie));
+			line=fisierIntrare.readLine();
+		}
+		System.out.println("CHEI + CARTI: ");
+		Set carti_set = carti_map.entrySet();
+		Iterator it = carti_set.iterator();
+
+		while(it.hasNext())
+		{
+			Entry p = (Entry)it.next();
+			int key = (int)p.getKey();
+			Carte val = (Carte)p.getValue();
+			System.out.println("CHEI: "+key+" INFO: "+val.toString());
+		}
+		List<Carte> valori=new ArrayList<Carte>();
+		valori.addAll(carti_map.values());
+
+		System.out.println("\nCARTI:");
+		for(Carte val:valori)
+		{
+			System.out.println(val);
+		}
+
+		System.out.println("\nCARTI ORDONATE DUPA TITLU:");
+		Collections.sort(valori,new ComparaTitlu());
+		for(Carte val:valori)
+		{
+			System.out.println(val);
+		}
+
+
+	}
+
+}
