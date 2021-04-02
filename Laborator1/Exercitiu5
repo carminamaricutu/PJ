@@ -1,0 +1,25 @@
+package laborator1_5;
+
+import java.util.Random;
+
+public class MainApp5 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//0,1,1,2,3,5,8,13,21,34,55->Fibonacci
+		Random rand=new Random();
+		int x = rand.nextInt(20);
+		System.out.println("Numarul ales random este:"+x);
+
+		int a[]= {0,1,1,2,3,5,8,13,21}, i, ok=0;
+		for(i=0;i<9;i++)
+			if(x==a[i])
+				ok=1;
+		if(ok==1)
+			System.out.println("Numarul apartine sirului lui Fibonacci.");
+		else
+			System.out.println("Numarul NU apartine sirului lui Fibonacci.");
+
+	}
+
+}
