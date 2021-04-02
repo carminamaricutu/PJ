@@ -1,0 +1,28 @@
+package laborator6_2;
+
+import java.util.Scanner;
+
+public class MainApp2 {
+	
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		boolean ok=false;
+		int a, b;
+		System.out.print("Introduceti deimpartitul:");
+		a=scan.nextInt();
+
+		do {
+			System.out.print("Introduceti deimpartitul:");
+			b=scan.nextInt();
+			try {
+				System.out.print(a/b);
+				ok=true;
+			}
+			catch (ArithmeticException e) {
+				System.out.println(e);
+			}
+		}while(!ok);
+		scan.close();
+	}
+
+}
