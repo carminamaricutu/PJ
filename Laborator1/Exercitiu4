@@ -1,0 +1,28 @@
+package laborator1_4;
+
+import java.util.Random;
+
+public class MainApp4 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Random rand=new Random();
+		int a = rand.nextInt(30);
+		int b = rand.nextInt(30);
+		System.out.println("RANDOM NUBER 1 IS "+a);
+		System.out.println("RANDOM NUBER 2 IS "+b);
+		if(a*b==0)
+			System.out.println("UNUL SAU AMBELE NUMERE SUNT 0.");
+		else {
+			while(a!=b) {
+				if(a>b)
+					a=a-b;
+				else
+					b=b-a;
+			}
+			
+			System.out.println(a);
+		}
+	}
+
+}
