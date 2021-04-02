@@ -1,0 +1,75 @@
+package laborator2_1;
+
+class Punct{
+	private double x;
+	private double y;
+	public Punct(double xx, double yy) {
+		x=xx;
+		y=yy;
+	}
+	public Punct(Punct a) {
+		x=a.x;
+		y=a.y;
+	}
+	public double getX() {return x;}
+	public double getY() {return y;}
+	public void afisare(Punct p) {
+		System.out.println("("+getX()+","+getY()+")");
+	}
+}
+
+class Parabola{
+	private double a;
+	private double b;
+	private double c;
+	public Parabola(double m, double n, double p){
+		a=m;
+		b=n;
+		c=p;
+	}
+	public double getA() {return a;}
+	public double getB() {return b;}
+	public double getC() {return c;}
+	
+	public Parabola(Parabola p) {
+		this(p.a, p.b, p.c);
+	}
+	public void afisare(Parabola a) {
+		System.out.println("f(x)="+getA()+"+x^2+"+getB()+"+x+"+getC());
+	}
+	public Punct calculVarf(Parabola p) {
+		double i=(-p.b)/(2*a);
+		double j=(-(b*b-4*a*c)/(2*a));
+		Punct pct=new Punct(i,j);
+		return pct;
+	}
+	public static Punct mijlocParabole(Parabola t, Parabola r) {
+		double i=(((-t.b)/(2*t.a))+((-r.b)/(2*r.a)))/2;
+		double j=((-(t.b*t.b-4*t.a*t.c)/(2*t.a))+(-(r.b*r.b-4*r.a*r.c)/(2*r.a)))/2;
+		Punct pct =new Punct (i, j);
+		return pct;
+	}
+}
+
+
+public class MainApp1 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Parabola p1= new Parabola(1, 4, 4);
+		p1.afisare(p1);
+		Parabola p2=new Parabola(1, 1, 1);
+		p2.afisare(p2);
+		System.out.print("Varf parabola 1:");
+		Punct pct1=new Punct(p1.calculVarf(p1));
+		pct1.afisare(pct1);
+		System.out.print("Varf parabola 2:");
+		Punct pct2=new Punct(p2.calculVarf(p2));
+		pct2.afisare(pct2);
+		System.out.print("Mijolcul segmentlui format cu varful parabolei 1 si parabolei 2:");
+		Punct mijloc;//new Punct(mijlocParabola(p1, p2));
+		mijloc=Parabola.mijlocParabole(p1,p2);
+		mijloc.afisare(mijloc);
+	}
+
+}
