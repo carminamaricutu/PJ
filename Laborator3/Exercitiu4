@@ -1,0 +1,84 @@
+package laborator3_4;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
+
+class Melodie{
+	private String nume_melodie;
+	private String nume_autor;
+	private int an_lansare;
+	private int nr_vizualizari;
+	public String getNume_melodie() {
+		return nume_melodie;
+	}
+	public String getNume_autor() {
+		return nume_autor;
+	}
+	public int getAn_lansare() {
+		return an_lansare;
+	}
+	public int getNr_vizualizari() {
+		return nr_vizualizari;
+	}
+	public Melodie(String nume_m, String nume_a, int an_lan, int nr_viz) {
+		nume_melodie=nume_m;
+		nume_autor=nume_a;
+		an_lansare=an_lan;
+		nr_vizualizari=nr_viz;
+	}
+	public void afisare(Melodie m) {
+		System.out.println(m.getNume_melodie()+" - "+m.getNume_autor()+" - "+m.getAn_lansare()+" - "+m.getNr_vizualizari());
+	}
+}
+
+public class MainApp4 {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedReader reader= new BufferedReader(new InputStreamReader(System.in));
+		Scanner scan_file=new Scanner(new File("in.txt"));
+		Melodie[] melodii=new Melodie[6];
+		String line;
+		int i=0;
+		//citire din fisier
+		while(scan_file.hasNext()) {
+			line=scan_file.nextLine();
+			String[] info=line.split(";");
+			melodii[i]=new Melodie(info[0], info[1],Integer.parseInt(info[2]), Integer.parseInt(info[3]));
+			i++;
+		}
+		//afisare cantece
+		for(i=0;i<melodii.length;i++)
+			melodii[i].afisare(melodii[i]);
+		//sortare in functie de nr_vizionari
+		boolean sw = true; 
+		Melodie aux;
+		while(sw){
+			sw=false;
+			for(i=0;i<melodii.length-1;i++)
+				if(melodii[i].getNr_vizualizari()<melodii[i+1].getNr_vizualizari()){
+					aux=melodii[i];
+					melodii[i]=melodii[i+1];
+					melodii[i+1]=aux;
+					sw=true;
+				}
+		} 
+		//afisare lista sortata
+		System.out.println("\nAfisare descrescatoare in functie de numarul de vizualizari:");
+		for(i=0;i<melodii.length;i++)
+			melodii[i].afisare(melodii[i]);
+		//cautare artist dupa nume
+		String nume_artist_cautat;
+		System.out.print("\nIntroduceti numele artistului pentru care doriti afisarea melodiilor:");
+		nume_artist_cautat=reader.readLine();
+		for(i=0;i<melodii.length;i++)
+			if(melodii[i].getNume_autor().contentEquals(nume_artist_cautat))
+				melodii[i].afisare(melodii[i]);
+	}
+
+}
