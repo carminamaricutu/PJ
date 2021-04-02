@@ -1,0 +1,34 @@
+package laborator1_3;
+
+import java.util.Scanner;
+
+public class MainApp3 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println("INRODUCETI NUMARUL ");
+
+		Scanner scan = new Scanner(System.in);
+		int x = scan.nextInt();
+		scan.close();
+		System.out.println("ATI INTRODUS NUMARUL " + x);
+		int i = 1, count = 0;
+		int n = x / 2;
+		for (i = 1; i <= n; i++) {
+			if ((x % i) == 0) 
+			{
+				count++;
+			}
+		}
+		if (count == 1)
+			System.out.println("NUMARUL INTRODUS ESTE PRIM.");
+		else {
+			System.out.print("Divizorii numarului introdus sunt: ");
+			for (i = n; i >= 1; i--) {
+				if (x % i == 0) {
+					System.out.print(" " + (x / i));
+				}
+			}
+		}
+	}
+}
