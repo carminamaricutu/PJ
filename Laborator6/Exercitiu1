@@ -1,0 +1,51 @@
+package laborator6_1;
+
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.util.Scanner;
+
+@SuppressWarnings("serial")
+class Pereche_num extends Exception {
+
+	public Pereche_num(String s, String p) {
+		System.out.println(s + " " + p);
+	}
+
+	public Pereche_num(String s) {
+		super(s);
+	}
+}
+
+public class MainApp {
+
+	public static void main(String[] args) throws FileNotFoundException {
+
+		PrintStream file_out = new PrintStream("perechi.txt");
+		Scanner scan = new Scanner(System.in);
+		boolean ok = false;
+		String a, b;
+		System.out.println("Introduceti 2 numere. Primul trebuie sa fie mai mic decat al doilea.");
+		do {
+			System.out.print("Introduceti primul numar:");
+			a = scan.nextLine();
+			System.out.print("Introduceti al doilea numar:");
+			b = scan.nextLine();
+			System.out.println(a.length());
+			try {
+				if (Integer.parseInt(a) < Integer.parseInt(b)) {
+					file_out.print(a + " " + b);
+					System.out.println(a + " " + b);
+					ok = true;
+				} else
+					throw new Pereche_num("Numerele nu indeplinesc conditia! Primul nr < al 2-lea!");
+			} catch (Pereche_num e) {
+				System.out.println(e);
+			} catch (NumberFormatException e) {
+				System.out.println(e);
+			}
+		} while (!ok);
+		scan.close();
+		file_out.close();
+	}
+
+}
