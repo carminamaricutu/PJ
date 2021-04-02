@@ -1,0 +1,32 @@
+package laborator3_3;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class MainApp3 {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedReader reader= new BufferedReader(new InputStreamReader(System.in));
+		Scanner scan_file=new Scanner(new File("judete_in.txt"));
+		String[] judete= new String[42];
+		int i=0;
+		while(scan_file.hasNext()) {
+			judete[i]=scan_file.nextLine();
+			i++;
+		}
+		Arrays.sort(judete);
+		System.out.println(Arrays.toString(judete));
+		System.out.print("Introduceti numele judetului:");
+		String jud_cautat;
+		jud_cautat=reader.readLine();
+		int j_c=Arrays.binarySearch(judete, jud_cautat)+1;
+		System.out.println("Judetul cautat se afla pe pozitia "+j_c+" in urma sortarii alfabetice");
+	}
+
+
+}
