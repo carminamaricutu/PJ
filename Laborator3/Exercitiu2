@@ -1,0 +1,32 @@
+package laborator3_2;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class MainApp2 {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		int start_del, stop_del, start_insert;
+		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder s=new StringBuilder();
+		System.out.print("Se citeste sirul de caractere:");
+		s.append(reader.readLine());
+		String insert_s;
+		System.out.print("Introduceti sirul de inserat:");
+		insert_s=reader.readLine();
+		System.out.print("Introduceti pozitia de la care se va face inserarea: ");
+		start_insert=Integer.parseInt(reader.readLine());
+		s.insert(start_insert, insert_s);
+		System.out.println(s);
+		System.out.print("Introduceti pozitia de inceput a stergerii: ");
+		start_del=Integer.parseInt(reader.readLine());
+		System.out.print("Introduceti nr. de caractere de sters: ");
+		stop_del=Integer.parseInt(reader.readLine());
+		s.delete(start_del, start_del+stop_del);
+		System.out.println(s);
+
+	}
+
+}
