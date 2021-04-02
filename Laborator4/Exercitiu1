@@ -1,0 +1,287 @@
+package laborator4_1;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Scanner;
+
+enum Stare{ achizitionat, expus, vandut };
+enum Mod_Scriere{Color,AlbNegru};
+enum Format_Copiere{A3, A4};
+enum Sistem_operare{windows, linux};	
+
+class Echipament implements Serializable{
+	String denumire;
+	int nr_inventar;
+	double pret;
+	char zona_mag;
+	Stare s;
+
+	public Echipament(String den, int nr_i, double pr, char zona_m, Stare st) {
+		denumire=den;
+		nr_inventar=nr_i;
+		pret=pr;
+		zona_mag=zona_m;
+		s=st;
+	}
+
+	@Override
+	public String toString() {
+		return denumire+" - "+nr_inventar+" - "+pret+" - "+zona_mag+" - "+s+" - ";
+	}
+	static Object read_file(String fis) {
+		try {
+			FileInputStream f = new FileInputStream(fis);
+			ObjectInputStream ois = new ObjectInputStream(f);
+			Object o=ois.readObject();
+			ois.close();
+			f.close();
+			return o;
+		}
+		catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	static void write_file(Object o, String fis) {
+		try {
+			FileOutputStream f = new FileOutputStream(fis);
+			ObjectOutputStream oos = new ObjectOutputStream(f);
+			oos.writeObject(o);
+			oos.close();
+			f.close();
+			System.out.println("Datele au fost scrise in "+fis+".");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getNr_inventar() {
+		return nr_inventar;
+	}
+
+	public void setNr_inventar(int nr_inventar) {
+		this.nr_inventar = nr_inventar;
+	}
+
+	public Stare getS() {
+		return s;
+	}
+
+	public void setS(Stare s) {
+		this.s = s;
+	}
+
+}
+
+class Consumabile_de_hartie extends Echipament implements Serializable{
+	int ppm;
+	public Consumabile_de_hartie(String den, int nr_i, double pr, char zona_m, Stare st, int ppmin) {
+		super(den, nr_i, pr, zona_m, st);
+		ppm=ppmin;
+}
+	@Override
+	public String toString() {
+		return super.toString()+ppm+" - ";
+	}
+}
+
+class Imprimanta extends Consumabile_de_hartie implements Serializable{
+
+	String rezolutie;
+	int p_car;
+	Mod_Scriere m;
+	public Imprimanta(String den, int nr_i, double pr, char zona_m, Stare st, int ppmin, String rez, int pCar, Mod_Scriere ms) {
+		super(den, nr_i, pr, zona_m, st, ppmin);
+		rezolutie=rez;
+		p_car=pCar;
+		m=ms;
+	}
+	@Override
+	public String toString() {
+		return super.toString()+rezolutie+" - "+p_car+" - "+m;
+	}
+	public Mod_Scriere getM() {
+		return m;
+	}
+	public void setM(Mod_Scriere m) {
+		this.m = m;
+	}
+
+}
+
+class Copiator extends Consumabile_de_hartie implements Serializable{
+	int p_ton;
+	Format_Copiere f;
+	public Copiator(String den, int nr_i, double pr, char zona_m, Stare st, int ppmin, int p_t, Format_Copiere fc) {
+		super(den, nr_i, pr, zona_m, st, ppmin);
+		p_ton=p_t;
+		f=fc;
+	}
+	@Override
+	public String toString() {
+		return super.toString()+p_ton+" - "+f;
+	}
+	public Format_Copiere getF() {
+		return f;
+	}
+	public void setF(Format_Copiere f) {
+		this.f = f;
+	}
+
+}
+
+
+class Sistem_calcul extends Echipament implements Serializable{
+	String tip_mon;
+	double vit_proc;
+	int c_hdd;
+	Sistem_operare so;
+	public Sistem_calcul(String den, int nr_i, double pr, char zona_m, Stare st, String tip_m,double v_proc, int cHdd, Sistem_operare s ) {
+		super(den, nr_i, pr, zona_m, st);
+		this.tip_mon=tip_m;
+		this.vit_proc=v_proc;
+		this.c_hdd=cHdd;
+		this.so=s;
+
+	}
+	@Override
+	public String toString() {
+		return super.toString()+tip_mon+" - "+vit_proc+" - "+c_hdd+" - "+so;
+	}
+	public Sistem_operare getSo() {
+		return so;
+	}
+	public void setSo(Sistem_operare so) {
+		this.so = so;
+	}
+
+}
+public class MainApp1 {
+
+	public static void main(String[] args) throws IOException {
+		int opt, i=0;
+		Echipament[] e=new Echipament[6];
+		Scanner scan=new Scanner(System.in);
+		Scanner scan_file=new Scanner(new File("echipamente.txt"));
+		BufferedReader reader= new BufferedReader(new InputStreamReader(System.in));
+		String line;
+		String[] s;
+		int counter=0;
+		while(scan_file.hasNext()) {
+			line=scan_file.nextLine();
+			s=line.split(";");
+			if(line.contains("imprimanta"))
+				e[i]=new Imprimanta(s[0], Integer.parseInt(s[1]), Double.parseDouble(s[2]), s[3].charAt(0), Stare.valueOf(s[4]), Integer.parseInt(s[6]),s[7], Integer.parseInt(s[8]), Mod_Scriere.valueOf(s[9]));
+			else if(line.contains("copiator"))
+				e[i]=new Copiator(s[0], Integer.parseInt(s[1]), Double.parseDouble(s[2]), s[3].charAt(0), Stare.valueOf(s[4]), Integer.parseInt(s[6]), Integer.parseInt(s[7]), Format_Copiere.valueOf(s[8]));
+			else if(line.contains("sistem de calcul"))
+				e[i]=new Sistem_calcul(s[0], Integer.parseInt(s[1]), Double.parseDouble(s[2]), s[3].charAt(0), Stare.valueOf(s[4]), s[6], Double.parseDouble(s[7]), Integer.parseInt(s[8]), Sistem_operare.valueOf(s[9]));
+			i++;
+		}
+		do {
+			System.out.println("0. Iesire meniu");
+			System.out.println("1. Afisarea imprimantelor");
+			System.out.println("2. Afisarea copiatoarelor");
+			System.out.println("3. Afisarea sistemelor de calcul");
+			System.out.println("4. Modificarea starii în care se afla un echipament");
+			System.out.println("5. Setarea unui anumit mod de scriere pentru o imprimantă");
+			System.out.println("6. Setarea unui format de copiere pentru copiatoare");
+			System.out.println("7. Instalarea unui anumit sistem de operare pe un sistem de calcul");
+			System.out.println("8. Afişarea echipamentelor vândute");
+			System.out.println("9. Scriere in echip.bin");
+			System.out.println("10. Citire din echip.bin");
+			System.out.println("11. Afisare continut");
+			System.out.println();
+			System.out.println("Introduceti optiunea:");
+			opt=scan.nextInt();
+			int nr_modif;
+			String stare_noua;
+			switch(opt) {
+			case 0: break;
+			case 1:
+				for(i=0;i<6;i++)
+					if(e[i] instanceof Imprimanta)
+						System.out.println(e[i].toString());
+				break;
+			case 2: 
+				for(i=0;i<6;i++)
+					if(e[i] instanceof Copiator)
+						System.out.println(e[i].toString());
+				break;
+			case 3:
+				for(i=0;i<6;i++)
+					if(e[i] instanceof Sistem_calcul)
+						System.out.println(e[i].toString());
+				break;
+			case 4: System.out.println("Introduceti numarul de inventar al echipamentului de modificat:");
+			nr_modif=scan.nextInt();
+			System.out.println("Introduceti noua stare:");
+			stare_noua=reader.readLine();
+			for(i=0;i<6;i++)
+				if(e[i].getNr_inventar()==nr_modif)
+					e[i].setS(Stare.valueOf(stare_noua));
+			break;
+			case 5:
+				System.out.println("Introduceti numarul de inventar al imprimantei de modificat:");
+				nr_modif=scan.nextInt();
+				System.out.println("Introduceti noul mod de scriere:");
+				stare_noua=reader.readLine();
+				for(i=0;i<6;i++)
+					if(e[i].getNr_inventar()==nr_modif) {
+						((Imprimanta) e[i]).setM(Mod_Scriere.valueOf(stare_noua));
+					}
+				break;
+			case 6:System.out.println("Introduceti numarul de inventar al copiatorului de modificat:");
+			nr_modif=scan.nextInt();
+			System.out.println("Introduceti setare de copiere:");
+			stare_noua=reader.readLine();
+			for(i=0;i<6;i++)
+				if(e[i].getNr_inventar()==nr_modif)
+					((Copiator) e[i]).setF(Format_Copiere.valueOf(stare_noua));
+			break;
+			case 7:System.out.println("Introduceti numarul de inventar al sistemului de calcul de modificat:");
+			nr_modif=scan.nextInt();
+			System.out.println("Introduceti noul sistem de operare:");
+			stare_noua=reader.readLine();
+			for(i=0;i<6;i++) {
+				//System.out.println(e[i].toString());
+
+				if(e[i].getNr_inventar()==nr_modif) {
+					System.out.println(e[i].toString());
+					((Sistem_calcul) e[i]).setSo(Sistem_operare.valueOf(stare_noua));
+				}
+			}
+			break;
+			case 8: System.out.println("Echipamente vandute:");
+			for(i=0;i<6;i++)
+				if(e[i].getS().toString()=="vandut")
+					System.out.println(e[i].toString());
+			break;
+			case 9:
+				Echipament.write_file(e, "echip.bin");
+				break;
+			case 10:
+				e=(Echipament[])Echipament.read_file("echip.bin");
+				counter = e.length;
+				break;
+			case 11:
+				for(i=0;i<counter;i++)
+					System.out.println(e[i].toString());
+			}
+		}while(opt!=0);
+
+	scan.close();
+	reader.close();
+	scan_file.close();
+	}
+	
+
+}
