@@ -1,0 +1,35 @@
+package laborator1_2;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class MainApp2 {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		Scanner scan=new Scanner(new File("C:\\\\Users\\\\Carmina\\\\Desktop\\\\Semestrul 4\\\\Pogramare Java\\\\programe java\\\\Laborator1\\\\src\\\\laborator1_2\\\\IN.txt")); 
+		int x = scan.nextInt(); //am citit prima linie a fisierului pentru a initializa minim si maxim
+		int sum=0, minim=x, maxim=x, counter=1;//couter incepe de la 1 deoarece s-a citit prima linie
+		double  average;
+		sum=sum+x;
+		while(scan.hasNext()){
+			x=scan.nextInt();
+			if(x<minim)
+				minim=x;
+			if(x>maxim)
+				maxim=x;
+			sum=sum+x;
+			counter++;
+		}
+		scan.close();
+		average=(double) sum/(double)counter;
+		System.out.println("SUMA "+sum);
+		System.out.println("MEDIA ARITMETICA " +average);
+		System.out.println("VALOARE MINIMA "+minim);
+		System.out.println("VALOARE MAXIMA "+maxim);
+
+	}
+
+}
